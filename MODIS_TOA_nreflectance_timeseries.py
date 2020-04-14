@@ -78,21 +78,21 @@ def read_nadir_modis(file):
         return out,df,df_para
     except:
         out ='error'
-        data = {'lat':999,
-                'lon':999,
-                'vza':999,
-                'vaa':999,
-                'sza':999,
-                'saa':999
+        data = {'lat':[999],
+                'lon':[999],
+                'vza':[999],
+                'vaa':[999],
+                'sza':[999],
+                'saa':[999]
                 }
         df = pd.DataFrame(data)
          calibration_para={
-        'corrected_counts_scales': 999,
-        'corrected_counts_offsets':999,
-        'reflectance_scales':999,
-        'reflectance_offsets':999,
-        'radiance_scales':999,
-        'radiance_offsets':999}
+        'corrected_counts_scales': [999],
+        'corrected_counts_offsets':[999],
+        'reflectance_scales':[999],
+        'reflectance_offsets':[999],
+        'radiance_scales':[999],
+        'radiance_offsets':[999]}
         df_para = pd.DataFrame(calibration_para)
         return out,df,df_para
 		
