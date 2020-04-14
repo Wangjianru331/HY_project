@@ -17,7 +17,7 @@ def read_nadir_modis(file):
         Lt = (f.select('EV_1KM_RefSB'))
 
         out = datetime.datetime.strptime(os.path.basename(file)[10:17], '%Y%j').date().strftime('%Y%m%d')
-        location = np.where((110<=lon)&(lon<=119.5)&(lat>=14)&(lat<=18)&(vza<=15))
+        location = np.where((110<=lon)&(lon<=111)&(lat>=15)&(lat<=16.5)&(vza<=10))
         DN = (Lt.get()[10,:,:][location]-Lt.attributes()['corrected_counts_offsets'][10])*Lt.attributes()['corrected_counts_scales'][10]
         nir = Lt.attributes()['radiance_scales'][10]*(DN-Lt.attributes()['radiance_offsets'][10])
         b = nir>8
@@ -77,7 +77,26 @@ def read_nadir_modis(file):
         df.dropna(axis=0,how='any')    
         return out,df,df_para
     except:
-        return 'error','error','error'
+        out ='error'
+        data = {'lat':999,
+                'lon':999,
+                'vza':999,
+                'vaa':999,
+                'sza':999,
+                'saa':999
+                }
+        df = pd.DataFrame(data)
+         calibration_para={
+        'corrected_counts_scales': 999,
+        'corrected_counts_offsets':999,
+        'reflectance_scales':999,
+        'reflectance_offsets':999,
+        'radiance_scales':999,
+        'radiance_offsets':999}
+        df_para = pd.DataFrame(calibration_para)
+        return out,df,df_para
+		
+		
 if __name__ == '__main__':
     # 该程序返回三个文件，每个文件对应的定标参数，每个文件对应的满足要求的像元信息，
     #所有文件的归一化天顶反射率时间序列结果，各波段的包括均值中值标准差
