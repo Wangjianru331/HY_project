@@ -17,12 +17,12 @@ def read_nadir_modis(file):
         Lt = (f.select('EV_1KM_RefSB'))
 
         out = datetime.datetime.strptime(os.path.basename(file)[10:17], '%Y%j').date().strftime('%Y%m%d')
-        location = np.where((110<=lon)&(lon<=111)&(lat>=15)&(lat<=16.5)&(vza<=10))
+        location = np.where((110<=lon)&(lon<=119)&(lat>=13)&(lat<=18)&(vza<=15))
         DN = (Lt.get()[10,:,:][location]-Lt.attributes()['corrected_counts_offsets'][10])*Lt.attributes()['corrected_counts_scales'][10]
         nir = Lt.attributes()['radiance_scales'][10]*(DN-Lt.attributes()['radiance_offsets'][10])
         b = nir>8
         nir[b] = np.nan
-        mask = nir/nir              # 设置耀斑云等无效值阈值
+        mask = nir/nir                    # 设置耀斑云等无效值阈值
         
         lon = lon[location]*mask
         lat = lat[location]*mask
