@@ -68,7 +68,7 @@ def read_nadir_modis(file):
             band = 'b'+str(i)
             df[band] = a
             
-            result = Lt.attributes()['reflectance_scales'][i]*((a-Lt.attributes()['corrected_counts_offsets'][i])*Lt.attributes()['corrected_counts_scales'][11]-Lt.attributes()['reflectance_offsets'][i])
+            result = Lt.attributes()['reflectance_scales'][i]*((a-Lt.attributes()['corrected_counts_offsets'][i])*Lt.attributes()['corrected_counts_scales'][i]-Lt.attributes()['reflectance_offsets'][i])
             result = result/cos
             mean = round(np.nanmean(result),4)            
             median = round(np.nanmedian(result),4)  
