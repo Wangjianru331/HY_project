@@ -1,0 +1,80 @@
+pyhdf报错： 
+ERROR: Command errored out with exit status 1:
+   command: 'C:\ProgramData\Anaconda3\python.exe' 'C:\ProgramData\Anaconda3\lib\site-packages\pip\_vendor\pep517\_in_process.py' get_requires_for_build_wheel 'C:\Users\lwk15\AppData\Local\Temp\tmp_t1xoepf'
+       cwd: C:\Users\lwk15\AppData\Local\Temp\pip-install-pwo2g3e3\pyhdf
+  Complete output (19 lines):
+  library_dirs = []
+  Traceback (most recent call last):
+    File "C:\ProgramData\Anaconda3\lib\site-packages\pip\_vendor\pep517\_in_process.py", line 257, in <module>
+      main()
+    File "C:\ProgramData\Anaconda3\lib\site-packages\pip\_vendor\pep517\_in_process.py", line 240, in main
+      json_out['return_val'] = hook(**hook_input['kwargs'])
+    File "C:\ProgramData\Anaconda3\lib\site-packages\pip\_vendor\pep517\_in_process.py", line 91, in get_requires_for_build_wheel
+      return hook(config_settings)
+    File "C:\Users\lwk15\AppData\Local\Temp\pip-build-env-lwcdeyie\overlay\Lib\site-packages\setuptools\build_meta.py", line 148, in get_requires_for_build_wheel
+      config_settings, requirements=['wheel'])
+    File "C:\Users\lwk15\AppData\Local\Temp\pip-build-env-lwcdeyie\overlay\Lib\site-packages\setuptools\build_meta.py", line 128, in _get_build_requires
+      self.run_setup()
+    File "C:\Users\lwk15\AppData\Local\Temp\pip-build-env-lwcdeyie\overlay\Lib\site-packages\setuptools\build_meta.py", line 250, in run_setup
+      self).run_setup(setup_script=setup_script)
+    File "C:\Users\lwk15\AppData\Local\Temp\pip-build-env-lwcdeyie\overlay\Lib\site-packages\setuptools\build_meta.py", line 143, in run_setup
+      exec(compile(code, __file__, 'exec'), locals())
+    File "setup.py", line 109, in <module>
+      raise RuntimeError("Cannot find required HDF4 DLLs -- check LIBRARY_DIRS")
+  RuntimeError: Cannot find required HDF4 DLLs -- check LIBRARY_DIRS
+  ----------------------------------------
+ERROR: Command errored out with exit status 1: 'C:\ProgramData\Anaconda3\python.exe' 'C:\ProgramData\Anaconda3\lib\site-packages\pip\_vendor\pep517\_in_process.py' get_requires_for_build_wheel 'C:\Users\lwk15\AppData\Local\Temp\tmp_t1xoepf' Check the logs for full command output.
+可以看到，主要问题在于：
+  File "setup.py", line 109, in <module>
+      raise RuntimeError("Cannot find required HDF4 DLLs -- check LIBRARY_DIRS")
+  RuntimeError: Cannot find required HDF4 DLLs -- check LIBRARY_DIRS
+指出没有HDF4 DLLs；我查了很多资料，尚无法从根本上解决这个问题。
+在Linux下安装这个包，同样会报错，但是有区别：
+ERROR: Command errored out with exit status 1:
+   command: /home/lwk/anaconda3/bin/python /home/lwk/anaconda3/lib/python3.7/site-packages/pip/_vendor/pep517/_in_process.py build_wheel /tmp/tmpder8qvcf
+       cwd: /tmp/pip-install-pp8r8zv5/pyhdf
+  Complete output (36 lines):
+  running bdist_wheel
+  running build
+  running config_cc
+  unifing config_cc, config, build_clib, build_ext, build commands --compiler options
+  running config_fc
+  unifing config_fc, config, build_clib, build_ext, build commands --fcompiler options
+  running build_src
+  build_src
+  building extension "pyhdf._hdfext" sources
+  build_src: building npy-pkg config files
+  running build_py
+  creating build
+  creating build/lib.linux-x86_64-3.7
+  creating build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/HC.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/HDF.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/SD.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/V.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/VS.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/__init__.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/error.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/hdfext.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/six.py -> build/lib.linux-x86_64-3.7/pyhdf
+  copying pyhdf/test_SD.py -> build/lib.linux-x86_64-3.7/pyhdf
+  running build_ext
+  customize UnixCCompiler
+  customize UnixCCompiler using build_ext
+  building 'pyhdf._hdfext' extension
+  compiling C sources
+  C compiler: gcc -pthread -B /home/lwk/anaconda3/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC
+  
+  creating build/temp.linux-x86_64-3.7/pyhdf
+  compile options: '-I/tmp/pip-build-env-ab5d2ulk/overlay/lib/python3.7/site-packages/numpy/core/include -I/home/lwk/anaconda3/include/python3.7m -c'
+  extra options: '-DNOSZIP'
+  gcc: pyhdf/hdfext_wrap.c
+  error: Command "gcc -pthread -B /home/lwk/anaconda3/compiler_compat -Wl,--sysroot=/ -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/tmp/pip-build-env-ab5d2ulk/overlay/lib/python3.7/site-packages/numpy/core/include -I/home/lwk/anaconda3/include/python3.7m -c pyhdf/hdfext_wrap.c -o build/temp.linux-x86_64-3.7/pyhdf/hdfext_wrap.o -MMD -MF build/temp.linux-x86_64-3.7/pyhdf/hdfext_wrap.o.d -DNOSZIP" failed with exit status 127
+  ----------------------------------------
+  ERROR: Failed building wheel for pyhdf
+Failed to build pyhdf
+ERROR: Could not build wheels for pyhdf which use PEP 517 and cannot be installed directly
+指出不能构建wheel。
+其编译出错的原理在于pip安装的时候，会首先利用setup.py文件将程序打包为wheel，然后在进行安装（https://stackoverflow.com/questions/53204916/what-is-the-meaning-of-failed-building-wheel-for-x-in-pip-install）
+所以如果我们能直接下载到.whl文件，就可以跳过这个打包过程。
+如下网站提供了whl文件：https://www.lfd.uci.edu/~gohlke/pythonlibs/。下载pyhdf并安装，顺利完成
