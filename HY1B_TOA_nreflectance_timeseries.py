@@ -63,7 +63,12 @@ def read_HY1B_nadir(file):
         sza2 = np.array(f['Navigation Data/Solar Zenith Angle'][:,:])[location]*mask
         
         for i,band in enumerate(bands):
-            radiance = (np.array(f['Geophysical Data/'+band][:,:]))[location]*mask*gain[i]+offset[i]
+
+            if offset[i]<-100 or offset[i]>100:
+                offset_=0
+            else:
+                offset_=offset[i]
+            radiance = (np.array(f['Geophysical Data/'+band][:,:]))[location]*mask*gain[i]+offset_
             nr = np.pi*radiance/F0[i]/np.cos(sza2*np.pi/180)
             nr = nr.flatten()
             band = 'b'+band[3:]
