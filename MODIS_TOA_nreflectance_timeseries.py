@@ -57,7 +57,7 @@ def read_nadir_modis(file):
         df_para = pd.DataFrame(calibration_para)
         sza2 = (f.select('SolarZenith')).get()
         sza2 = sza2[location]*mask
-        cos = np.cos(sza2*np.pi/180)
+        cos = np.cos(sza2*0.01*np.pi/180)
         for i in range(11):
             a = Lt.get()[i,:,:][location]*mask
             a = np.array(a, dtype=float)
@@ -86,7 +86,7 @@ def read_nadir_modis(file):
                 'saa':[999]
                 }
         df = pd.DataFrame(data)
-         calibration_para={
+        calibration_para={
         'corrected_counts_scales': [999],
         'corrected_counts_offsets':[999],
         'reflectance_scales':[999],
